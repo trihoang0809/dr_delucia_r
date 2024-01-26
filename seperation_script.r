@@ -4,8 +4,8 @@ library(dplyr)
 library(stringr)
 
 # Define directories
-subject_data_folder <- "path/to/SubjectDataFolder"
-imotions_data_folder <- "path/to/imotions data folder"
+subject_data_folder <- "/Users/th52/Box/DeLuciaLab/Undergraduate RAs/Tri H/Subject Data";
+imotions_data_folder <- "/Users/th52/Box/DeLuciaLab/Undergraduate RAs/Tri H/Subject Data/imotions data folder"
 
 # Function to get the corresponding imotion file name
 get_imotion_filename <- function(subject_id) {
