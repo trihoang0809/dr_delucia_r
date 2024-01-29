@@ -31,10 +31,10 @@ merge_files <- function(file_path1, file_path2, output_file_path) {
   write_csv(combined_data, output_file_path)
 }
 
-# Example usage of the function
-file_path1 <- "path/to/first_file.csv"
-file_path2 <- "path/to/second_file.csv"
-output_file_path <- "path/to/Combined data analysis/combined_file.csv"
+# Usage of the function
+file_path1 <- "/Users/th52/Box/DeLuciaLab/Undergraduate RAs/Tri H/Subject Data"
+file_path2 <- "/Users/th52/Box/DeLuciaLab/Undergraduate RAs/Tri H/Subject Data/imotions data folder"
+output_file_path <- "/Users/th52/Box/DeLuciaLab/Undergraduate RAs/Tri H/Subject Data/Combined data analysis/"
 
 # Call the function with the file paths
 merge_files(file_path1, file_path2, output_file_path)
