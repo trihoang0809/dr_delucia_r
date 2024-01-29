@@ -4,15 +4,16 @@ library(dplyr)
 
 # Function to process the second file
 process_second_file <- function(file_path) {
-  data <- read_csv(file_path)
+  # Read the CSV file starting from row 25 (header names are at row 25)
+  data <- read_csv(file_path, skip = 24)
 
-  # Assuming 'AM' is the trial number, 'R', 'W', and 'AC' are the columns to process
+  # Process the data
   processed_data <- data %>%
-    group_by(AM) %>%
+    group_by(`Trial instance`) %>%
     summarise(
-      mean_Fix_Index = mean(R[R != 0], na.rm = TRUE),
-      mean_Fixation_Duration = mean(W[W != 0], na.rm = TRUE),
-      mean_Saccade_Duration = mean(AC[AC != 0], na.rm = TRUE)
+      mean_Fix_Index = mean(`Fixation Index by Stimulus`[`Fixation Index by Stimulus` != 0], na.rm = TRUE),
+      mean_Fixation_Duration = mean(`Fixation Duration`[`Fixation Duration` != 0], na.rm = TRUE),
+      mean_Saccade_Duration = mean(`Saccade Duration`[`Saccade Duration` != 0], na.rm = TRUE)
     )
   
   return(processed_data)
@@ -24,8 +25,8 @@ merge_files <- function(file_path1, file_path2, output_file_path) {
   data1 <- read_csv(file_path1)
   data2 <- process_second_file(file_path2)
 
-  # Merging the files
-  combined_data <- merge(data1, data2, by = "AM") # Replace "AM" with the common column to merge on
+  # Merging the files based on the 'Trial' column in data1 and 'Trial instance' column in data2
+  combined_data <- merge(data1, data2, by.x = "Trial", by.y = "Trial instance")
 
   # Save the merged data
   write_csv(combined_data, output_file_path)
