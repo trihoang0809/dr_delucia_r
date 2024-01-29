@@ -33,9 +33,9 @@ merge_files <- function(file_path1, file_path2, output_file_path) {
 }
 
 # Usage of the function
-file_path1 <- "/Users/th52/Box/DeLuciaLab/Undergraduate RAs/Tri H/Subject Data"
-file_path2 <- "/Users/th52/Box/DeLuciaLab/Undergraduate RAs/Tri H/Subject Data/imotions data folder"
-output_file_path <- "/Users/th52/Box/DeLuciaLab/Undergraduate RAs/Tri H/Subject Data/Combined data analysis/"
+file_path1 <- "/Users/trihoang/Downloads/Subj1038_TTC_AV1_Data.csv"
+file_path2 <- "/Users/trihoang/Downloads/021_1038TTCAV1.csv"
+output_file_path <- "/Users/trihoang/Downloads/combined_data_test.csv"
 
 # Call the function with the file paths
 merge_files(file_path1, file_path2, output_file_path)
