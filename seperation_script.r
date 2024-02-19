@@ -33,16 +33,19 @@ merge_files <- function(file_path1, file_path2, output_file_path) {
 }
 
 # Usage of the function
-# file_path1 <- "/Users/trihoang/Downloads/Subj1038_TTC_AV1_Data.csv"
-# file_path2 <- "/Users/trihoang/Downloads/021_1038TTCAV1.csv"
-# output_file_path <- "/Users/trihoang/Downloads/combined_data_test.csv"
+# Replace with real paths
 base_dir <- "/path/to/your/base/directory"
 imotions_dir <- file.path(base_dir, "imotions data folder")
 output_dir <- file.path(base_dir, "Combined data analysis")
 
 # Function to preprocess imotions file names
 preprocess_imotions_files <- function(imotions_dir) {
+  # List all entries in the directory
   imotions_files <- list.files(imotions_dir, full.names = TRUE)
+  
+  # Filter out sub-directories, keeping only files
+  imotions_files <- imotions_files[!sapply(imotions_files, function(x) file.info(x)$isdir)]
+
   names_without_prefix <- sapply(imotions_files, function(x) {
     parts <- unlist(strsplit(basename(x), "_"))
     paste(parts[-1], collapse = "_")  # Remove the first three characters and the "_" sign
@@ -77,5 +80,5 @@ merge_all_files <- function(base_dir, imotions_dir, output_dir) {
   }
 }
 
-# Example call to the function
+# Call to the function
 merge_all_files(base_dir, imotions_dir, output_dir)
