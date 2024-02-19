@@ -33,9 +33,49 @@ merge_files <- function(file_path1, file_path2, output_file_path) {
 }
 
 # Usage of the function
-file_path1 <- "/Users/trihoang/Downloads/Subj1038_TTC_AV1_Data.csv"
-file_path2 <- "/Users/trihoang/Downloads/021_1038TTCAV1.csv"
-output_file_path <- "/Users/trihoang/Downloads/combined_data_test.csv"
+# file_path1 <- "/Users/trihoang/Downloads/Subj1038_TTC_AV1_Data.csv"
+# file_path2 <- "/Users/trihoang/Downloads/021_1038TTCAV1.csv"
+# output_file_path <- "/Users/trihoang/Downloads/combined_data_test.csv"
+base_dir <- "/path/to/your/base/directory"
+imotions_dir <- file.path(base_dir, "imotions data folder")
+output_dir <- file.path(base_dir, "Combined data analysis")
 
-# Call the function with the file paths
-merge_files(file_path1, file_path2, output_file_path)
+# Function to preprocess imotions file names
+preprocess_imotions_files <- function(imotions_dir) {
+  imotions_files <- list.files(imotions_dir, full.names = TRUE)
+  names_without_prefix <- sapply(imotions_files, function(x) {
+    parts <- unlist(strsplit(basename(x), "_"))
+    paste(parts[-1], collapse = "_")  # Remove the first three characters and the "_" sign
+  })
+  names(imotions_files) <- names_without_prefix  # Assign modified names as names of the list
+  return(imotions_files)
+}
+
+# Automated merging for all subjects and trials
+merge_all_files <- function(base_dir, imotions_dir, output_dir) {
+  imotions_files <- preprocess_imotions_files(imotions_dir)
+  
+  for (subj_id in 1001:1051) {
+    subj_dir <- file.path(base_dir, as.character(subj_id))
+    if (!dir.exists(subj_dir)) next  # Skip if the folder doesn't exist
+    
+    for (trial_id in 1:4) {
+      subj_file_name <- sprintf("Subj%d_TTC_AV%d_Data.csv", subj_id, trial_id)
+      subj_file_path <- file.path(subj_dir, subj_file_name)
+      
+      if (!file.exists(subj_file_path)) next  # Skip if the file doesn't exist
+      
+      # Matching imotions file
+      imotions_file_name <- gsub("Subj", "", subj_file_name)
+      imotions_file_path <- imotions_files[[imotions_file_name]]
+      
+      if (!is.null(imotions_file_path)) {
+        output_file_path <- file.path(output_dir, paste("combined", subj_file_name, sep = "_"))
+        merge_files(subj_file_path, imotions_file_path, output_file_path)
+      }
+    }
+  }
+}
+
+# Example call to the function
+merge_all_files(base_dir, imotions_dir, output_dir)
