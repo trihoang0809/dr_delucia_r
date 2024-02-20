@@ -19,8 +19,9 @@ process_second_file <- function(file_path) {
   return(processed_data)
 }
 
+
 # Function to merge two files
-merge_files <- function(file_path1, file_path2, output_file_path) {
+merge_files <- function(file_path1, file_path2, output_file_path, key_data) {
   # Read and process files
   data1 <- read_csv(file_path1)
   data2 <- process_second_file(file_path2)
@@ -28,8 +29,12 @@ merge_files <- function(file_path1, file_path2, output_file_path) {
   # Merging the files based on the 'Trial' column in data1 and 'Trial instance' column in data2
   combined_data <- merge(data1, data2, by.x = "Trial", by.y = "Trial instance")
 
+  # Next Step: Merge with Key Data
+  # 'Trial' is the common column in combined_data and key_data
+  final_combined_data <- merge(combined_data, key_data, by = "Trial", all.x = TRUE)
+  
   # Save the merged data
-  write_csv(combined_data, output_file_path)
+  write_csv(final_combined_data, output_file_path)
 }
 
 # Usage of the function
@@ -55,7 +60,7 @@ preprocess_imotions_files <- function(imotions_dir) {
 }
 
 # Automated merging for all subjects and trials
-merge_all_files <- function(base_dir, imotions_dir, output_dir) {
+merge_all_files <- function(base_dir, imotions_dir, output_dir, key_data) {
   imotions_files <- preprocess_imotions_files(imotions_dir)
   
   for (subj_id in 1001:1051) {
@@ -74,11 +79,13 @@ merge_all_files <- function(base_dir, imotions_dir, output_dir) {
       
       if (!is.null(imotions_file_path)) {
         output_file_path <- file.path(output_dir, paste("combined", subj_file_name, sep = "_"))
-        merge_files(subj_file_path, imotions_file_path, output_file_path)
+        merge_files(subj_file_path, imotions_file_path, output_file_path, key_data)
       }
     }
   }
 }
 
 # Call to the function
-merge_all_files(base_dir, imotions_dir, output_dir)
+key_file_path <- file.path(base_dir, "Key_to_trialnames_TTCEM.xlsx")
+key_data <- read_excel(key_file_path)
+merge_all_files(base_dir, imotions_dir, output_dir, key_data)
