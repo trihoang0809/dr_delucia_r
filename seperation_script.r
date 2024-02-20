@@ -39,7 +39,8 @@ merge_files <- function(file_path1, file_path2, output_file_path, key_data) {
 
 # Usage of the function
 # Replace with real paths
-base_dir <- "/path/to/your/base/directory"
+base_dir <- "/Users/melissacloutier/Library/CloudStorage/Box-
+Box/DeLuciaLab/MelissaCloutier/TTCEM/Subject Data/"
 imotions_dir <- file.path(base_dir, "imotions data folder")
 output_dir <- file.path(base_dir, "Combined data analysis")
 
