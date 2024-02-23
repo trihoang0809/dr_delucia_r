@@ -75,8 +75,9 @@ merge_all_files <- function(base_dir, imotions_dir, output_dir, key_data) {
       if (!file.exists(subj_file_path)) next  # Skip if the file doesn't exist
       
       # Matching imotions file
-      imotions_file_name <- gsub("Subj", "", subj_file_name)
-      imotions_file_path <- imotions_files[[imotions_file_name]]
+      # Remove "Subj", underscores, "_Data.csv", and then append ".csv" to match the format in imotions_files
+      imotions_file_name <- gsub("Subj|_|_Data.csv", "", subj_file_name)
+      imotions_file_name <- paste(imotions_file_name, ".csv", sep="")
       
       if (!is.null(imotions_file_path)) {
         output_file_path <- file.path(output_dir, paste("combined", subj_file_name, sep = "_"))
